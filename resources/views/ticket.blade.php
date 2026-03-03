@@ -6,15 +6,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @media print {
-            @page {
-                size: A5;
-                margin: 12mm;
-            }
-            body {
-                margin: 0 !important;
-                padding: 0 !important;
-                background: white !important;
-            }
             body * { visibility: hidden; }
             .ticket-container, .ticket-container * { visibility: visible; }
             .ticket-container {
@@ -22,13 +13,11 @@
                 left: 0 !important;
                 top: 0 !important;
                 width: 100% !important;
-                max-width: none !important;
                 margin: 0 !important;
-                padding: 1rem 1.5rem !important;
+                padding: 1.5rem !important;
                 box-shadow: none !important;
-                border-radius: 0 !important;
-                background: white !important;
-                background-image: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .no-print { display: none !important; }
         }
