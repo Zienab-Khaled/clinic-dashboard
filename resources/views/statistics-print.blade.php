@@ -10,7 +10,7 @@
             font-family: system-ui, sans-serif;
             margin: 1rem;
             color: #111;
-            background-image: url('/images/background.jpg');
+            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('/images/background.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;

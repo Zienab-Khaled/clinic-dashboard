@@ -1,13 +1,13 @@
 <style>
     .fi-body {
-        background-image: url('{{ asset("images/background.jpg") }}');
+        background-image: linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)), url('{{ asset("images/background.jpg") }}');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         background-repeat: no-repeat;
     }
     .fi-main-ctn {
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.85);
         min-height: 100vh;
     }
     .fi-sidebar,

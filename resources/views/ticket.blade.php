@@ -21,9 +21,16 @@
             }
             .no-print { display: none !important; }
         }
+        body {
+            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset('images/background.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
     </style>
 </head>
-<body class="bg-gray-200">
+<body>
     <div class="no-print p-4 text-center">
         <button onclick="window.print()" class="px-4 py-2 bg-green-600 text-white rounded">طباعة التذكرة</button>
         <a href="{{ url('/admin') }}" class="ml-3 px-4 py-2 bg-blue-600 text-white rounded inline-block">العودة للوحة التحكم</a>

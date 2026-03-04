@@ -12,12 +12,23 @@ class Clinic extends Model
         'name',
         'created_at',
         'patient_number',
+        'current_serving',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'patient_number' => 'integer',
+        'current_serving' => 'integer',
     ];
+
+    public function callNext(): bool
+    {
+        if ($this->current_serving >= $this->patient_number) {
+            return false;
+        }
+        $this->increment('current_serving');
+        return true;
+    }
 
     public function generateTicketNumber(): int
     {

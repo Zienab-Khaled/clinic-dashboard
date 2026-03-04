@@ -13,7 +13,7 @@ class ResetClinicsTicketsCommand extends Command
 
     public function handle(): int
     {
-        $count = Clinic::query()->update(['patient_number' => 0]);
+        Clinic::query()->update(['patient_number' => 0, 'current_serving' => 0]);
 
         $this->info('تم تصفير أرقام المرضى لجميع العيادات.');
 
