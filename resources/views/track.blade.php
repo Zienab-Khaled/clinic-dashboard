@@ -17,10 +17,11 @@
     </style>
 </head>
 <body class="min-h-screen p-6 flex items-center justify-center">
-    @if($clinic)
+    @php $location = $clinic ?? $department; $locationName = $clinic ? $clinic->name : ($department ? $department->name : null); $currentLabel = $clinic ? 'الحالي عند الطبيب' : 'الحالي'; $calledMsg = $clinic ? 'توجه للعيادة' : 'توجه للقسم'; @endphp
+    @if($location)
         <div class="max-w-md w-full bg-white/95 rounded-2xl shadow-xl p-8 border-2 border-amber-200">
             <h1 class="text-xl font-bold text-center text-slate-800 mb-2">متابعة التذكرة</h1>
-            <p class="text-center text-amber-600 font-semibold text-lg mb-6">{{ $clinic->name }}</p>
+            <p class="text-center text-amber-600 font-semibold text-lg mb-6">{{ $locationName }}</p>
 
             <div class="space-y-4 text-lg">
                 <p class="flex justify-between py-2 border-b border-slate-200">
@@ -28,7 +29,7 @@
                     <span class="font-bold text-slate-800">{{ $yourNumber }}</span>
                 </p>
                 <p class="flex justify-between py-2 border-b border-slate-200">
-                    <span class="text-slate-600">الحالي عند الطبيب:</span>
+                    <span class="text-slate-600">{{ $currentLabel }}:</span>
                     <span class="font-bold text-amber-600">{{ $currentServing }}</span>
                 </p>
                 <p class="flex justify-between py-2 border-b border-slate-200">
@@ -38,14 +39,14 @@
             </div>
 
             @if($yourNumber <= $currentServing && $currentServing > 0)
-                <p class="mt-6 text-center text-green-600 font-bold" id="called-msg">تم استدعاؤك — توجه للعيادة</p>
+                <p class="mt-6 text-center text-green-600 font-bold" id="called-msg">تم استدعاؤك — {{ $calledMsg }}</p>
             @endif
 
             <p class="text-slate-500 text-center text-sm mt-6">التحديث تلقائي كل 10 ثوانٍ</p>
-    @if($clinic && $yourNumber <= $currentServing && $currentServing > 0)
+    @if($location && $yourNumber <= $currentServing && $currentServing > 0)
             <script>
                 (function() {
-                    var key = 'called-sound-{{ $clinic->id }}-{{ $yourNumber }}';
+                    var key = 'called-sound-{{ $location->id }}-{{ $yourNumber }}';
                     if (!sessionStorage.getItem(key)) {
                         sessionStorage.setItem(key, '1');
                         try {

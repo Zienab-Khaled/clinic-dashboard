@@ -22,9 +22,10 @@
         <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
             <img src="{{ asset('images/logo.jpg') }}" alt="شعار المستشفى" class="w-16 h-16 md:w-20 md:h-20 object-contain rounded-lg" onerror="this.style.display='none'">
             <div class="text-center md:text-right">
-                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">شاشة الموظف</h1>
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-800">شاشة الموظف - العيادات</h1>
                 <p class="text-slate-600 mt-1">اختر العيادة لإصدار تذكرة بالرقم الجديد</p>
             </div>
+            <a href="{{ route('home') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">الرئيسية</a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

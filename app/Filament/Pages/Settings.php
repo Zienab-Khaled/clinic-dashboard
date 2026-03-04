@@ -7,6 +7,8 @@ use Filament\Support\Icons\Heroicon;
 
 class Settings extends Page
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationLabel = 'الإعدادات';
 
     protected static ?string $title = 'الإعدادات';
