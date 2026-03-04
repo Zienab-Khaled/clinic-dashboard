@@ -33,7 +33,7 @@
 <body>
     <div class="no-print p-4 text-center">
         <button onclick="window.print()" class="px-4 py-2 bg-green-600 text-white rounded">طباعة التذكرة</button>
-        <a href="{{ url('/admin') }}" class="ml-3 px-4 py-2 bg-blue-600 text-white rounded inline-block">العودة للوحة التحكم</a>
+        <a href="{{ url('/staff') }}" class="ml-3 px-4 py-2 bg-blue-600 text-white rounded inline-block">العودة للوحة التحكم</a>
     </div>
     <div class="ticket-container max-w-xl mx-auto my-12 p-8 rounded-lg shadow-lg overflow-hidden relative"
          style="background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset('images/background.jpg') }}'); background-size: cover; background-position: center;">
@@ -54,5 +54,10 @@
             </div>
         </div>
     </div>
+    <script>
+        if (window.opener && {{ $clinicId ?? 0 }}) {
+            window.opener.postMessage({ type: 'ticket-issued', clinicId: {{ $clinicId }} }, '*');
+        }
+    </script>
 </body>
 </html>

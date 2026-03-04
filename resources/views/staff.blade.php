@@ -44,29 +44,41 @@
                     $colorClass = $colors[$colorKeys[$index % count($colors)]];
                     $waiting = $clinic->patient_number - $clinic->current_serving;
                 @endphp
-                <div class="card-clinic rounded-xl border-2 {{ $colorClass }} p-5 shadow-md bg-white/95">
+                <div class="card-clinic rounded-xl border-2 {{ $colorClass }} p-5 shadow-md bg-white/95" data-clinic-id="{{ $clinic->id }}">
                     <p class="text-xl font-bold text-slate-800 text-center mb-4">{{ $clinic->name }}</p>
                     <div class="space-y-2 text-center text-sm">
                         <p class="text-slate-600">
                             <span class="font-medium">عدد المرضى في الانتظار:</span>
-                            <span class="font-bold text-slate-800">{{ $waiting }}</span>
+                            <span class="font-bold text-slate-800" data-waiting>{{ $waiting }}</span>
                         </p>
                         <p class="text-slate-600">
                             <span class="font-medium">رقم المريض الحالي:</span>
-                            <span class="font-bold text-slate-800">{{ $clinic->current_serving }}</span>
+                            <span class="font-bold text-slate-800" data-current>{{ $clinic->current_serving }}</span>
                         </p>
                     </div>
                     <a href="{{ route('ticket.show', $clinic) }}" target="_blank"
-                       class="mt-4 block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-center shadow">
+                       class="staff-issue-ticket mt-4 block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-center shadow">
                         إصدار تذكرة (الرقم الجديد)
                     </a>
                 </div>
             @endforeach
         </div>
 
-        <p class="text-center mt-8">
-            <a href="{{ url('/admin') }}" class="text-amber-600 hover:underline">لوحة التحكم (مدير)</a>
-        </p>
     </div>
+    <script>
+        window.addEventListener('message', function (e) {
+            if (e.data && e.data.type === 'ticket-issued' && e.data.clinicId) {
+                fetch('/api/clinics/' + e.data.clinicId)
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        var card = document.querySelector('[data-clinic-id="' + e.data.clinicId + '"]');
+                        if (card) {
+                            card.querySelector('[data-waiting]').textContent = data.waiting;
+                            card.querySelector('[data-current]').textContent = data.current_serving;
+                        }
+                    });
+            }
+        });
+    </script>
 </body>
 </html>

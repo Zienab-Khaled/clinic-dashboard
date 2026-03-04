@@ -15,6 +15,7 @@ class TicketController extends Controller
         $now = now()->locale('ar');
 
         return view('ticket', [
+            'clinicId' => $clinic->id,
             'clinicName' => $clinic->name,
             'ticketNumber' => $ticketNumber,
             'date' => $now->translatedFormat('l، d F Y'),

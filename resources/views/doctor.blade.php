@@ -57,9 +57,6 @@
             </p>
         @endif
 
-        <p class="text-center mt-8">
-            <a href="{{ url('/admin') }}" class="text-gray-500 hover:underline">لوحة التحكم (مدير)</a>
-        </p>
     </div>
 </body>
 </html>
