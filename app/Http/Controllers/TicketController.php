@@ -14,10 +14,16 @@ class TicketController extends Controller
 
         $now = now()->locale('ar');
 
+        $trackUrl = url()->route('track', [
+            'clinic_id' => $clinic->id,
+            'number' => $ticketNumber,
+        ]);
+
         return view('ticket', [
             'clinicId' => $clinic->id,
             'clinicName' => $clinic->name,
             'ticketNumber' => $ticketNumber,
+            'trackUrl' => $trackUrl,
             'date' => $now->translatedFormat('l، d F Y'),
             'time' => $now->format('h:i:s') . ' ' . ($now->format('A') === 'AM' ? 'ص' : 'م'),
             'hospitalName' => $hospitalName,

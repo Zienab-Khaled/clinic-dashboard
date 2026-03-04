@@ -73,11 +73,14 @@ class Statistics extends Page implements HasTable
                 ->icon('heroicon-o-arrow-path')
                 ->requiresConfirmation()
                 ->modalHeading('إعادة تعيين أرقام المرضى')
-                ->modalDescription('سيتم تصفير عدد المرضى لجميع العيادات. هل أنت متأكد؟')
+                ->modalDescription('سيتم تصفير عدد المرضى ورقم الاستدعاء الحالي لجميع العيادات (شاشة الموظف، الطبيب، والعرض). هل أنت متأكد؟')
                 ->action(function (): void {
-                    Clinic::query()->update(['patient_number' => 0]);
+                    Clinic::query()->update([
+                        'patient_number' => 0,
+                        'current_serving' => 0,
+                    ]);
                     Notification::make()
-                        ->title('تم تصفير الإحصائيات')
+                        ->title('تم تصفير كل الإحصائيات في النظام')
                         ->success()
                         ->send();
                 }),

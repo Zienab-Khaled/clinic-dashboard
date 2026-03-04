@@ -6,6 +6,7 @@ use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StatisticsPrintController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,6 +14,7 @@ Route::get('/', function () {
 });
 
 Route::get('/ticket/{clinic}', [TicketController::class, 'show'])->name('ticket.show');
+Route::get('/track', TrackController::class)->name('track');
 
 Route::get('/api/clinics', [ClinicStatsController::class, 'index'])->name('api.clinics.index');
 Route::get('/api/clinics/{clinic}', [ClinicStatsController::class, 'show'])->name('api.clinics.show');

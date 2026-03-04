@@ -46,6 +46,11 @@
             <h2 class="text-4xl font-bold text-center my-6">عيادة {{ $clinicName }}</h2>
             {{-- رقم التذكرة كبير في النص --}}
             <p class="text-8xl font-bold text-center my-6">{{ $ticketNumber }}</p>
+            {{-- باركود QR لمتابعة التذكرة --}}
+            <div class="flex flex-col items-center my-6">
+                <p class="text-sm text-slate-600 mb-2">امسح الباركود لمتابعة رقمك والانتظار</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ urlencode($trackUrl ?? '') }}" alt="باركود المتابعة" class="w-28 h-28 rounded border border-slate-200">
+            </div>
             {{-- الداتا المكتوبة زي القديم: تاريخ، وقت، اسم المستشفى محاذاة لليمين --}}
             <div class="text-right text-xl space-y-1 mt-8">
                 <p>{{ $date }}</p>
