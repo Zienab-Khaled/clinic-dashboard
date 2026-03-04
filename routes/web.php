@@ -14,6 +14,7 @@ Route::get('/', function () {
 
 Route::get('/ticket/{clinic}', [TicketController::class, 'show'])->name('ticket.show');
 
+Route::get('/api/clinics', [ClinicStatsController::class, 'index'])->name('api.clinics.index');
 Route::get('/api/clinics/{clinic}', [ClinicStatsController::class, 'show'])->name('api.clinics.show');
 Route::get('/staff', [StaffController::class, 'index'])->name('staff');
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');

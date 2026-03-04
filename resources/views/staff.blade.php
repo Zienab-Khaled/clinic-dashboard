@@ -66,17 +66,23 @@
 
     </div>
     <script>
-        window.addEventListener('message', function (e) {
-            if (e.data && e.data.type === 'ticket-issued' && e.data.clinicId) {
-                fetch('/api/clinics/' + e.data.clinicId)
-                    .then(function (r) { return r.json(); })
-                    .then(function (data) {
-                        var card = document.querySelector('[data-clinic-id="' + e.data.clinicId + '"]');
+        function updateStaffCards() {
+            fetch('/api/clinics')
+                .then(function (r) { return r.json(); })
+                .then(function (clinics) {
+                    clinics.forEach(function (c) {
+                        var card = document.querySelector('[data-clinic-id="' + c.id + '"]');
                         if (card) {
-                            card.querySelector('[data-waiting]').textContent = data.waiting;
-                            card.querySelector('[data-current]').textContent = data.current_serving;
+                            card.querySelector('[data-waiting]').textContent = c.waiting;
+                            card.querySelector('[data-current]').textContent = c.current_serving;
                         }
                     });
+                });
+        }
+        setInterval(updateStaffCards, 1500);
+        window.addEventListener('message', function (e) {
+            if (e.data && e.data.type === 'ticket-issued' && e.data.clinicId) {
+                updateStaffCards();
             }
         });
     </script>
