@@ -38,10 +38,42 @@
             </div>
 
             @if($yourNumber <= $currentServing && $currentServing > 0)
-                <p class="mt-6 text-center text-green-600 font-bold">تم استدعاؤك — توجه للعيادة</p>
+                <p class="mt-6 text-center text-green-600 font-bold" id="called-msg">تم استدعاؤك — توجه للعيادة</p>
             @endif
 
             <p class="text-slate-500 text-center text-sm mt-6">التحديث تلقائي كل 10 ثوانٍ</p>
+    @if($clinic && $yourNumber <= $currentServing && $currentServing > 0)
+            <script>
+                (function() {
+                    var key = 'called-sound-{{ $clinic->id }}-{{ $yourNumber }}';
+                    if (!sessionStorage.getItem(key)) {
+                        sessionStorage.setItem(key, '1');
+                        try {
+                            var C = window.AudioContext || window.webkitAudioContext;
+                            if (C) {
+                                var ctx = new C();
+                                var dur = 0.28, gap = 0.12;
+                                function chime(freq, startAt) {
+                                    var o = ctx.createOscillator();
+                                    var g = ctx.createGain();
+                                    o.connect(g);
+                                    g.connect(ctx.destination);
+                                    o.frequency.value = freq;
+                                    o.type = 'sine';
+                                    g.gain.setValueAtTime(0, startAt);
+                                    g.gain.linearRampToValueAtTime(0.25, startAt + 0.02);
+                                    g.gain.exponentialRampToValueAtTime(0.01, startAt + dur);
+                                    o.start(startAt);
+                                    o.stop(startAt + dur);
+                                }
+                                chime(523, ctx.currentTime);
+                                chime(784, ctx.currentTime + dur + gap);
+                            }
+                        } catch (e) {}
+                    }
+                })();
+            </script>
+    @endif
         </div>
     @else
         <div class="bg-white/95 rounded-xl p-8 text-center max-w-sm">

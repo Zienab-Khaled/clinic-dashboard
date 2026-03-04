@@ -28,20 +28,58 @@
         @endforeach
     </div>
     <p class="text-slate-600 text-center text-sm mt-6">مستشفى الملك عبد العزيز التخصصي بالجوف — التحديث تلقائي كل ثانية ونصف</p>
+    <p class="text-center mt-2">
+        <button type="button" onclick="window.playCallSound && window.playCallSound()" class="px-4 py-2 text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg">تشغيل نغمة تجريبية</button>
+    </p>
     <script>
-        setInterval(function() {
-            fetch('/api/clinics')
-                .then(function(r) { return r.json(); })
-                .then(function(clinics) {
-                    clinics.forEach(function(c) {
-                        var card = document.querySelector('#display-cards [data-clinic-id="' + c.id + '"]');
-                        if (card) {
-                            card.querySelector('[data-current]').textContent = c.current_serving;
-                            card.querySelector('[data-total]').textContent = c.patient_number;
-                        }
+        (function() {
+            var prev = {};
+            function playCallSound() {
+                try {
+                    var C = window.AudioContext || window.webkitAudioContext;
+                    if (!C) return;
+                    var ctx = new C();
+                    var dur = 0.28;
+                    var gap = 0.12;
+                    function chime(freq, startAt) {
+                        var o = ctx.createOscillator();
+                        var g = ctx.createGain();
+                        o.connect(g);
+                        g.connect(ctx.destination);
+                        o.frequency.value = freq;
+                        o.type = 'sine';
+                        g.gain.setValueAtTime(0, startAt);
+                        g.gain.linearRampToValueAtTime(0.25, startAt + 0.02);
+                        g.gain.exponentialRampToValueAtTime(0.01, startAt + dur);
+                        o.start(startAt);
+                        o.stop(startAt + dur);
+                    }
+                    chime(523, ctx.currentTime);
+                    chime(784, ctx.currentTime + dur + gap);
+                } catch (e) {}
+            }
+            window.playCallSound = playCallSound;
+            setInterval(function() {
+                fetch('/api/clinics')
+                    .then(function(r) { return r.json(); })
+                    .then(function(clinics) {
+                        var played = false;
+                        clinics.forEach(function(c) {
+                            var oldVal = prev[c.id];
+                            if (oldVal !== undefined && c.current_serving > oldVal && c.current_serving > 0) {
+                                played = true;
+                            }
+                            prev[c.id] = c.current_serving;
+                            var card = document.querySelector('#display-cards [data-clinic-id="' + c.id + '"]');
+                            if (card) {
+                                card.querySelector('[data-current]').textContent = c.current_serving;
+                                card.querySelector('[data-total]').textContent = c.patient_number;
+                            }
+                        });
+                        if (played) playCallSound();
                     });
-                });
-        }, 1500);
+            }, 1500);
+        })();
     </script>
 </body>
 </html>
