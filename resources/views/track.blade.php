@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('{{ asset("images/background.jpg") }}');
+            background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;

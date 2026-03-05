@@ -10,7 +10,7 @@ class TicketController extends Controller
     public function show(Clinic $clinic)
     {
         $ticketNumber = $clinic->generateTicketNumber();
-        $hospitalName = 'مستشفى الملك عبد العزيز التخصصي بالجوف';
+        $hospitalName = setting('hospital_name', 'مستشفى الملك عبد العزيز التخصصي بالجوف');
 
         $now = now()->locale('ar');
 

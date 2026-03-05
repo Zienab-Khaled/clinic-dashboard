@@ -1,6 +1,6 @@
 <style>
     .fi-body {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)), url('{{ asset("images/background.jpg") }}');
+        background-image: linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;

@@ -7,16 +7,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset("images/background.jpg") }}');
+            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             min-height: 100vh;
         }
         .card-number { font-size: min(12vw, 5rem); }
+        #call-overlay {
+            transition: opacity 0.3s ease;
+        }
+        #call-overlay.hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-6">
+    {{-- overlay يعرض الرقم المستدعى كبيراً لثوانٍ --}}
+    <div id="call-overlay" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/70" aria-hidden="true">
+        <div class="bg-white rounded-3xl shadow-2xl p-12 md:p-16 text-center max-w-4xl mx-4">
+            <p id="call-overlay-clinic" class="text-2xl md:text-3xl font-bold text-amber-600 mb-4"></p>
+            <p id="call-overlay-number" class="text-[20vw] md:text-[15rem] font-black text-slate-800 leading-none" style="font-size: min(25vw, 18rem);"></p>
+            <p class="text-xl text-slate-600 mt-4">تم استدعاؤك — توجه للعيادة</p>
+        </div>
+    </div>
+
     <h1 class="text-slate-800 text-center text-xl md:text-2xl mb-6 font-bold">منطقة الانتظار - الرقم الحالي لكل عيادة</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto" id="display-cards">
         @foreach($clinics as $clinic)
@@ -27,7 +40,7 @@
             </div>
         @endforeach
     </div>
-    <p class="text-slate-600 text-center text-sm mt-6">مستشفى الملك عبد العزيز التخصصي بالجوف — التحديث تلقائي كل ثانية ونصف</p>
+    <p class="text-slate-600 text-center text-sm mt-6">{{ setting('hospital_name', 'مستشفى الملك عبد العزيز التخصصي بالجوف') }} — التحديث تلقائي كل ثانية ونصف</p>
     <p class="text-center mt-2">
         <button type="button" onclick="window.playCallSound && window.playCallSound()" class="px-4 py-2 text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg">تشغيل نغمة تجريبية</button>
     </p>
@@ -59,6 +72,18 @@
                 } catch (e) {}
             }
             window.playCallSound = playCallSound;
+            var overlayTimeout = null;
+            function showCallOverlay(clinicName, number) {
+                var overlay = document.getElementById('call-overlay');
+                document.getElementById('call-overlay-clinic').textContent = 'عيادة ' + clinicName;
+                document.getElementById('call-overlay-number').textContent = number;
+                overlay.classList.remove('hidden');
+                if (overlayTimeout) clearTimeout(overlayTimeout);
+                overlayTimeout = setTimeout(function() {
+                    overlay.classList.add('hidden');
+                    overlayTimeout = null;
+                }, 5000);
+            }
             setInterval(function() {
                 fetch('/api/clinics')
                     .then(function(r) { return r.json(); })
@@ -68,6 +93,7 @@
                             var oldVal = prev[c.id];
                             if (oldVal !== undefined && c.current_serving > oldVal && c.current_serving > 0) {
                                 played = true;
+                                showCallOverlay(c.name, c.current_serving);
                             }
                             prev[c.id] = c.current_serving;
                             var card = document.querySelector('#display-cards [data-clinic-id="' + c.id + '"]');

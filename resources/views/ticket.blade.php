@@ -22,7 +22,7 @@
             .no-print { display: none !important; }
         }
         body {
-            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset('images/background.jpg') }}');
+            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -36,7 +36,7 @@
         <a href="{{ url('/staff') }}" class="ml-3 px-4 py-2 bg-blue-600 text-white rounded inline-block">العودة للوحة التحكم</a>
     </div>
     <div class="ticket-container max-w-xl mx-auto my-12 p-8 rounded-lg shadow-lg overflow-hidden relative"
-         style="background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset('images/background.jpg') }}'); background-size: cover; background-position: center;">
+         style="background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}'); background-size: cover; background-position: center;">
         <div class="relative z-10">
             {{-- اللوجو في الأعلى --}}
             <div class="flex justify-end mb-2">

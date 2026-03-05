@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>تقرير الإحصائيات - نظام إدارة العيادات - مستشفى الملك عبد العزيز التخصصي بالجوف</title>
+    <title>تقرير الإحصائيات - {{ setting('hospital_name', 'مستشفى الملك عبد العزيز التخصصي بالجوف') }}</title>
     <style>
         * { box-sizing: border-box; }
         body {
             font-family: system-ui, sans-serif;
             margin: 1rem;
             color: #111;
-            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('/images/background.jpg');
+            background-image: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)), url('{{ asset(setting("background_image") ?? "images/background.jpg") }}');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -28,7 +28,7 @@
 <body>
     <div class="content-wrap">
     <h1>تقرير الإحصائيات</h1>
-    <p class="meta">نظام إدارة العيادات - مستشفى الملك عبد العزيز التخصصي بالجوف</p>
+    <p class="meta">{{ setting('hospital_name', 'مستشفى الملك عبد العزيز التخصصي بالجوف') }}</p>
     <p class="meta">{{ now()->translatedFormat('l، d F Y - H:i') }}</p>
 
     <table>

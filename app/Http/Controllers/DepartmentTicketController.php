@@ -10,7 +10,7 @@ class DepartmentTicketController extends Controller
     public function show(Department $department): View
     {
         $ticketNumber = $department->generateTicketNumber();
-        $hospitalName = 'مستشفى الملك عبد العزيز التخصصي بالجوف';
+        $hospitalName = setting('hospital_name', 'مستشفى الملك عبد العزيز التخصصي بالجوف');
         $now = now()->locale('ar');
 
         $trackUrl = url()->route('track', [
