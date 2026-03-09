@@ -15,6 +15,7 @@ class DepartmentForm
                 Select::make('type')
                     ->label('نوع القسم')
                     ->options([
+                        'emergency' => 'الطوارئ',
                         'radiology' => 'الأشعة',
                         'pharmacy' => 'الصيدلية',
                         'lab' => 'المختبر',

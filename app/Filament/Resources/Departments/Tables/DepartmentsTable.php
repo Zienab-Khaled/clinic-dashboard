@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 class DepartmentsTable
 {
     private const TYPE_LABELS = [
+        'emergency' => 'الطوارئ',
         'radiology' => 'الأشعة',
         'pharmacy' => 'الصيدلية',
         'lab' => 'المختبر',

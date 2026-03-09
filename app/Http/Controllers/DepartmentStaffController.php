@@ -10,6 +10,7 @@ use Illuminate\View\View;
 class DepartmentStaffController extends Controller
 {
     private const TYPE_LABELS = [
+        'emergency' => 'الطوارئ',
         'radiology' => 'الأشعة',
         'pharmacy' => 'الصيدلية',
         'lab' => 'المختبر',

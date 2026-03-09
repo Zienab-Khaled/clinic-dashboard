@@ -24,11 +24,16 @@
         <p class="text-slate-600 mt-2">اختر الخدمة</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
         <a href="{{ url('/staff') }}" class="card-main rounded-2xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 p-8 shadow-lg text-center block">
             <span class="text-4xl mb-3 block">🏥</span>
             <h2 class="text-xl font-bold text-slate-800">العيادات</h2>
             <p class="text-slate-600 text-sm mt-1">إصدار تذاكر العيادات</p>
+        </a>
+        <a href="{{ url('/department/emergency') }}" class="card-main rounded-2xl border-2 border-red-400 bg-red-50 hover:bg-red-100 p-8 shadow-lg text-center block">
+            <span class="text-4xl mb-3 block">🚑</span>
+            <h2 class="text-xl font-bold text-slate-800">الطوارئ</h2>
+            <p class="text-slate-600 text-sm mt-1">أقسام الطوارئ — إصدار تذاكر</p>
         </a>
         <a href="{{ url('/department/radiology') }}" class="card-main rounded-2xl border-2 border-sky-400 bg-sky-50 hover:bg-sky-100 p-8 shadow-lg text-center block">
             <span class="text-4xl mb-3 block">📷</span>
