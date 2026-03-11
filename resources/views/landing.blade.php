@@ -24,32 +24,31 @@
         <p class="text-slate-600 mt-2">اختر الخدمة</p>
     </div>
 
+    @php
+        /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\Service[] $services */
+        $services = \App\Models\Service::query()
+            ->whereNull('parent_id')
+            ->where('active', true)
+            ->orderBy('sort_order')
+            ->get();
+    @endphp
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
-        <a href="{{ url('/staff') }}" class="card-main rounded-2xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 p-8 shadow-lg text-center block">
-            <span class="text-4xl mb-3 block">🏥</span>
-            <h2 class="text-xl font-bold text-slate-800">العيادات</h2>
-            <p class="text-slate-600 text-sm mt-1">إصدار تذاكر العيادات</p>
-        </a>
-        <a href="{{ url('/department/emergency') }}" class="card-main rounded-2xl border-2 border-red-400 bg-red-50 hover:bg-red-100 p-8 shadow-lg text-center block">
-            <span class="text-4xl mb-3 block">🚑</span>
-            <h2 class="text-xl font-bold text-slate-800">الطوارئ</h2>
-            <p class="text-slate-600 text-sm mt-1">أقسام الطوارئ — إصدار تذاكر</p>
-        </a>
-        <a href="{{ url('/department/radiology') }}" class="card-main rounded-2xl border-2 border-sky-400 bg-sky-50 hover:bg-sky-100 p-8 shadow-lg text-center block">
-            <span class="text-4xl mb-3 block">📷</span>
-            <h2 class="text-xl font-bold text-slate-800">الأشعة</h2>
-            <p class="text-slate-600 text-sm mt-1">إصدار تذاكر الأشعة</p>
-        </a>
-        <a href="{{ url('/department/pharmacy') }}" class="card-main rounded-2xl border-2 border-emerald-400 bg-emerald-50 hover:bg-emerald-100 p-8 shadow-lg text-center block">
-            <span class="text-4xl mb-3 block">💊</span>
-            <h2 class="text-xl font-bold text-slate-800">الصيدلية</h2>
-            <p class="text-slate-600 text-sm mt-1">إصدار تذاكر الصيدلية</p>
-        </a>
-        <a href="{{ url('/department/lab') }}" class="card-main rounded-2xl border-2 border-violet-400 bg-violet-50 hover:bg-violet-100 p-8 shadow-lg text-center block">
-            <span class="text-4xl mb-3 block">🔬</span>
-            <h2 class="text-xl font-bold text-slate-800">المختبر</h2>
-            <p class="text-slate-600 text-sm mt-1">إصدار تذاكر المختبر</p>
-        </a>
+        @foreach($services as $service)
+            <a href="{{ $service->url }}" class="{{ $service->card_class }}">
+                <span class="text-4xl mb-3 block">
+                    @if($service->icon)
+                        {{ $service->icon }}
+                    @else
+                        <img src="{{ asset('images/service-fallback.png') }}" alt="" class="w-12 h-12 mx-auto object-contain block service-fallback-img" onerror="this.classList.add('!hidden'); this.nextElementSibling.classList.remove('hidden');">
+                        <span class="service-fallback-emoji hidden">🎫</span>
+                    @endif
+                </span>
+                <h2 class="text-xl font-bold text-slate-800">{{ $service->title }}</h2>
+                <p class="text-slate-500 text-sm mt-0.5">{{ \Illuminate\Support\Str::title(str_replace(['-', '_'], ' ', $service->key)) }}</p>
+                <p class="text-slate-600 text-sm mt-1">{{ $service->subtitle ?: 'إصدار تذاكر ' . $service->title }}</p>
+            </a>
+        @endforeach
     </div>
 </body>
 </html>

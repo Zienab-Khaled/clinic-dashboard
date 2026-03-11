@@ -21,6 +21,7 @@ class DepartmentTicketController extends Controller
         $backUrl = url('/department/' . $department->type);
 
         return view('ticket-department', [
+            'department' => $department,
             'departmentId' => $department->id,
             'departmentName' => $department->name,
             'ticketNumber' => $ticketNumber,

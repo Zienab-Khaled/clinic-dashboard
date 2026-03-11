@@ -17,11 +17,16 @@
     </style>
 </head>
 <body class="min-h-screen p-6 flex items-center justify-center">
-    @php $location = $clinic ?? $department; $locationName = $clinic ? $clinic->name : ($department ? $department->name : null); $currentLabel = $clinic ? 'الحالي عند الطبيب' : 'الحالي'; $calledMsg = $clinic ? 'توجه للعيادة' : 'توجه للقسم'; @endphp
+    @php $location = $clinic ?? $department; $locationName = $clinic ? $clinic->name : ($department ? $department->name : null); $locationNameEn = $department && !empty($department->name_en) ? $department->name_en : null; $currentLabel = $clinic ? 'الحالي عند الطبيب' : 'الحالي'; $calledMsg = $clinic ? 'توجه للعيادة' : 'توجه للقسم'; @endphp
     @if($location)
         <div class="max-w-md w-full bg-white/95 rounded-2xl shadow-xl p-8 border-2 border-amber-200">
             <h1 class="text-xl font-bold text-center text-slate-800 mb-2">متابعة التذكرة</h1>
-            <p class="text-center text-amber-600 font-semibold text-lg mb-6">{{ $locationName }}</p>
+            <p class="text-center text-amber-600 font-semibold text-lg mb-1">{{ $locationName }}</p>
+            @if($locationNameEn)
+                <p class="text-center text-slate-500 text-sm mb-6">{{ $locationNameEn }}</p>
+            @else
+                <div class="mb-6"></div>
+            @endif
 
             <div class="space-y-4 text-lg">
                 <p class="flex justify-between py-2 border-b border-slate-200">

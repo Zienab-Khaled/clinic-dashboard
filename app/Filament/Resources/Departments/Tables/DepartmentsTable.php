@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Departments\Tables;
 
 use App\Models\Department;
+use App\Models\Service;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -12,26 +13,27 @@ use Filament\Tables\Table;
 
 class DepartmentsTable
 {
-    private const TYPE_LABELS = [
-        'emergency' => 'الطوارئ',
-        'radiology' => 'الأشعة',
-        'pharmacy' => 'الصيدلية',
-        'lab' => 'المختبر',
-    ];
-
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('type')
                     ->label('نوع القسم')
-                    ->formatStateUsing(fn (string $state): string => self::TYPE_LABELS[$state] ?? $state)
+                    ->formatStateUsing(function (string $state): string {
+                        $service = Service::query()->where('key', $state)->first();
+
+                        return $service ? $service->title . ' (' . $state . ')' : $state;
+                    })
                     ->badge()
                     ->sortable(),
                 TextColumn::make('name')
-                    ->label('اسم التصنيف')
+                    ->label('الاسم (عربي)')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('name_en')
+                    ->label('الاسم (إنجليزي)')
+                    ->placeholder('—')
+                    ->searchable(),
                 TextColumn::make('patient_number')
                     ->label('عدد المرضى')
                     ->numeric()

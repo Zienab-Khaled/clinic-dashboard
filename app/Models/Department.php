@@ -9,6 +9,7 @@ class Department extends Model
     protected $fillable = [
         'type',
         'name',
+        'name_en',
         'patient_number',
         'current_serving',
     ];

@@ -22,7 +22,7 @@ class DepartmentResource extends Resource
 
     protected static ?string $modelLabel = 'تصنيف';
 
-    protected static ?string $pluralModelLabel = 'تصنيفات الأشعة / الصيدلية / المختبر';
+    protected static ?string $pluralModelLabel = 'تصنيفات الأقسام';
 
     protected static string|\UnitEnum|null $navigationGroup = 'إدارة الخدمات';
 

@@ -41,7 +41,10 @@
             <div class="flex justify-end mb-2">
                 <img src="{{ asset('images/logo.jpg') }}" alt="شعار المستشفى" class="w-16 h-16 object-contain" onerror="this.style.display='none'">
             </div>
-            <h2 class="text-4xl font-bold text-center my-6">{{ $departmentName }}</h2>
+            <h2 class="text-4xl font-bold text-center my-6">{{ $department->name }}</h2>
+            @if(!empty($department->name_en))
+                <p class="text-xl text-slate-600 text-center -mt-2 mb-2">{{ $department->name_en }}</p>
+            @endif
             <p class="text-8xl font-bold text-center my-6">{{ $ticketNumber }}</p>
             <div class="flex flex-col items-center my-6">
                 <p class="text-sm text-slate-600 mb-2">امسح الباركود لمتابعة رقمك والانتظار</p>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ClinicStatsController;
 use App\Http\Controllers\Api\DepartmentStatsController;
+use App\Http\Controllers\DepartmentDisplayController;
 use App\Http\Controllers\DepartmentStaffController;
 use App\Http\Controllers\DepartmentTicketController;
 use App\Http\Controllers\DoctorController;
@@ -24,12 +25,14 @@ Route::get('/api/clinics', [ClinicStatsController::class, 'index'])->name('api.c
 Route::get('/api/clinics/{clinic}', [ClinicStatsController::class, 'show'])->name('api.clinics.show');
 Route::get('/api/departments', [DepartmentStatsController::class, 'index'])->name('api.departments.index');
 Route::get('/staff', [StaffController::class, 'index'])->name('staff');
-Route::get('/department/{type}', [DepartmentStaffController::class, 'index'])->name('department.staff')->where('type', 'emergency|radiology|pharmacy|lab');
-Route::post('/department/{type}/reset', [DepartmentStaffController::class, 'reset'])->name('department.reset')->where('type', 'emergency|radiology|pharmacy|lab');
+Route::get('/department/{type}', [DepartmentStaffController::class, 'index'])->name('department.staff')->where('type', '[^/]+');
+Route::post('/department/{type}/reset', [DepartmentStaffController::class, 'reset'])->name('department.reset')->where('type', '[^/]+');
 Route::post('/department/{department}/next', [DepartmentStaffController::class, 'next'])->name('department.next')->where('department', '[0-9]+');
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');
 Route::post('/doctor/{clinic}/next', [DoctorController::class, 'next'])->name('doctor.next');
 Route::get('/display', DisplayController::class)->name('display');
+Route::get('/display/department/{type}', DepartmentDisplayController::class)->name('department.display')
+    ->where('type', '[^/]+');
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin/statistics/print', StatisticsPrintController::class)->name('admin.statistics.print');
