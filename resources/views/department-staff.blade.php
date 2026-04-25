@@ -31,6 +31,9 @@
                 <a href="{{ route('department.display', $type) }}" target="_blank" class="px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg">
                     عرض شاشة الانتظار للقسم
                 </a>
+                <a href="{{ route('department.doctor.index', $type) }}" target="_blank" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg">
+                    فتح شاشة الطبيب
+                </a>
                 @endif
                 <form action="{{ route('department.reset', $type) }}" method="post" class="inline" onsubmit="return confirm('إعادة تعيين أرقام {{ $title }}؟');">
                     @csrf

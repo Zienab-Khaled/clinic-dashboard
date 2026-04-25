@@ -30,4 +30,15 @@ class DepartmentStatsController extends Controller
 
         return response()->json($departments);
     }
+
+    public function show(Department $department): JsonResponse
+    {
+        return response()->json([
+            'id' => $department->id,
+            'name' => $department->name,
+            'patient_number' => $department->patient_number,
+            'current_serving' => $department->current_serving,
+            'waiting' => $department->patient_number - $department->current_serving,
+        ]);
+    }
 }

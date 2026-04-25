@@ -25,7 +25,10 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-slate-800">شاشة الموظف - العيادات</h1>
                 <p class="text-slate-600 mt-1">اختر العيادة لإصدار تذكرة بالرقم الجديد</p>
             </div>
-            <a href="{{ route('home') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">الرئيسية</a>
+            <div class="flex gap-2">
+                <a href="{{ route('home') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">الرئيسية</a>
+                <a href="{{ route('doctor.index') }}" target="_blank" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg">فتح شاشة الطبيب (الاستدعاء)</a>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
