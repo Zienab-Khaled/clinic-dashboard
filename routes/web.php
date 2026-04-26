@@ -29,7 +29,6 @@ Route::get('/api/departments/single/{department}', [DepartmentStatsController::c
 Route::get('/staff', [StaffController::class, 'index'])->name('staff');
 Route::get('/department/{type}', [DepartmentStaffController::class, 'index'])->name('department.staff')->where('type', '[^/]+');
 Route::post('/department/{type}/reset', [DepartmentStaffController::class, 'reset'])->name('department.reset')->where('type', '[^/]+');
-Route::post('/department/{department}/next', [DepartmentStaffController::class, 'next'])->name('department.next')->where('department', '[0-9]+');
 Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor.index');
 Route::post('/doctor/{clinic}/next', [DoctorController::class, 'next'])->name('doctor.next');
 Route::get('/doctor/department/{type}', [DepartmentDoctorController::class, 'index'])->name('department.doctor.index')->where('type', '[^/]+');

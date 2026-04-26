@@ -87,39 +87,12 @@
                        class="dept-issue-ticket mt-4 block w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-center shadow">
                         إصدار تذكرة
                     </a>
-                    @if($hasWaitingDisplay ?? false)
-                    <form action="{{ route('department.next', $dept) }}" method="post" class="mt-2 dept-call-next-form">
-                        @csrf
-                        <button type="submit" class="dept-call-next-btn w-full py-2.5 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg text-center shadow text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-emerald-500" {{ $waiting <= 0 ? 'disabled' : '' }}>
-                            استدعاء للمريض التالي
-                        </button>
-                    </form>
-                    @endif
                 </div>
-            @endforeach
+@endforeach
         </div>
     </div>
     <script>
         var deptType = @json($type);
-        function playCallSound() {
-            try {
-                var C = window.AudioContext || window.webkitAudioContext;
-                if (!C) return;
-                var ctx = new C();
-                var dur = 0.28, gap = 0.12;
-                function chime(freq, startAt) {
-                    var o = ctx.createOscillator(), g = ctx.createGain();
-                    o.connect(g); g.connect(ctx.destination);
-                    o.frequency.value = freq; o.type = 'sine';
-                    g.gain.setValueAtTime(0, startAt);
-                    g.gain.linearRampToValueAtTime(0.25, startAt + 0.02);
-                    g.gain.exponentialRampToValueAtTime(0.01, startAt + dur);
-                    o.start(startAt); o.stop(startAt + dur);
-                }
-                chime(523, ctx.currentTime);
-                chime(784, ctx.currentTime + dur + gap);
-            } catch (e) {}
-        }
         function updateDeptCards() {
             fetch('/api/departments?type=' + encodeURIComponent(deptType))
                 .then(function (r) { return r.json(); })
@@ -134,24 +107,10 @@
                                 if (totalEl) totalEl.textContent = d.patient_number;
                                 if (currentEl) currentEl.textContent = d.current_serving;
                                 if (nextEl) nextEl.textContent = d.waiting > 0 ? (d.current_serving + 1) : '—';
-                                var btn = card.querySelector('.dept-call-next-btn');
-                                if (btn) btn.disabled = d.waiting <= 0;
                             }
                         });
                 });
         }
-        document.querySelectorAll('.dept-call-next-form').forEach(function (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                if (form.querySelector('.dept-call-next-btn').disabled) return;
-                var fd = new FormData(form);
-                fetch(form.action, { method: 'POST', body: fd })
-                    .then(function () {
-                        playCallSound();
-                        updateDeptCards();
-                    });
-            });
-        });
         setInterval(updateDeptCards, 1500);
         window.addEventListener('message', function (e) {
             if (e.data && e.data.type === 'ticket-issued-dept' && e.data.departmentId) {

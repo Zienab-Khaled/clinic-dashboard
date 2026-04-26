@@ -51,9 +51,4 @@ class DepartmentStaffController extends Controller
         return redirect()->back()->with('message', 'تم إعادة تعيين الأرقام');
     }
 
-    public function next(Department $department): RedirectResponse
-    {
-        $department->callNext();
-        return redirect()->back();
-    }
 }
