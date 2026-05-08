@@ -93,7 +93,27 @@
     </div>
     <script>
         var deptType = @json($type);
+        var activePoll = false;
+        var pollTimer = null;
+        var visibleIntervalMs = 4000;
+        var hiddenIntervalMs = 10000;
+
+        function nextPollDelay() {
+            return document.hidden ? hiddenIntervalMs : visibleIntervalMs;
+        }
+
+        function schedulePoll(delay) {
+            if (pollTimer) clearTimeout(pollTimer);
+            pollTimer = setTimeout(updateDeptCards, delay);
+        }
+
         function updateDeptCards() {
+            if (activePoll) {
+                schedulePoll(nextPollDelay());
+                return;
+            }
+
+            activePoll = true;
             fetch('/api/departments?type=' + encodeURIComponent(deptType))
                 .then(function (r) { return r.json(); })
                 .then(function (list) {
@@ -109,9 +129,22 @@
                                 if (nextEl) nextEl.textContent = d.waiting > 0 ? (d.current_serving + 1) : '—';
                             }
                         });
+                })
+                .catch(function () {
+                    // Keep polling on failures.
+                })
+                .finally(function () {
+                    activePoll = false;
+                    schedulePoll(nextPollDelay());
                 });
         }
-        setInterval(updateDeptCards, 1500);
+
+        document.addEventListener('visibilitychange', function () {
+            schedulePoll(nextPollDelay());
+        });
+
+        schedulePoll(1000);
+
         window.addEventListener('message', function (e) {
             if (e.data && e.data.type === 'ticket-issued-dept' && e.data.departmentId) {
                 updateDeptCards();

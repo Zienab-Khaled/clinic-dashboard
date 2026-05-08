@@ -25,13 +25,12 @@ class DepartmentStaffController extends Controller
             ->orderBy('name')
             ->get();
 
-        $title = Service::query()->where('key', $type)->value('title') ?? self::TYPE_LABELS[$type] ?? $type;
-
         $service = Service::query()
             ->whereNull('parent_id')
             ->where('key', $type)
             ->where('active', true)
             ->first();
+        $title = $service?->title ?? self::TYPE_LABELS[$type] ?? $type;
         $hasWaitingDisplay = $service?->has_waiting_display ?? false;
 
         return view('department-staff', [

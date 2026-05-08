@@ -84,8 +84,28 @@
                     overlayTimeout = null;
                 }, 5000);
             }
-            setInterval(function() {
-                fetch('/api/clinics')
+            var activePoll = false;
+            var pollTimer = null;
+            var visibleIntervalMs = 4000;
+            var hiddenIntervalMs = 10000;
+
+            function nextPollDelay() {
+                return document.hidden ? hiddenIntervalMs : visibleIntervalMs;
+            }
+
+            function schedulePoll(delay) {
+                if (pollTimer) clearTimeout(pollTimer);
+                pollTimer = setTimeout(pollClinics, delay);
+            }
+
+            function pollClinics() {
+                if (activePoll) {
+                    schedulePoll(nextPollDelay());
+                    return;
+                }
+
+                activePoll = true;
+                fetch('/api/clinics', { cache: 'no-store' })
                     .then(function(r) { return r.json(); })
                     .then(function(clinics) {
                         var played = false;
@@ -103,8 +123,21 @@
                             }
                         });
                         if (played) playCallSound();
+                    })
+                    .catch(function() {
+                        // Keep polling even if one request fails.
+                    })
+                    .finally(function() {
+                        activePoll = false;
+                        schedulePoll(nextPollDelay());
                     });
-            }, 1500);
+            }
+
+            document.addEventListener('visibilitychange', function() {
+                schedulePoll(nextPollDelay());
+            });
+
+            schedulePoll(1000);
         })();
     </script>
 </body>

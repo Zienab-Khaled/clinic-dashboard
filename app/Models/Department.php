@@ -31,8 +31,7 @@ class Department extends Model
     public function generateTicketNumber(): int
     {
         $this->increment('patient_number');
-        $this->refresh();
-        return $this->patient_number;
+        return (int) $this->patient_number;
     }
 
     public function getWaitingAttribute(): int
